@@ -1,12 +1,19 @@
 ﻿using MediatR;
 using TaskManager.Application.DTOs.Tasks;
 using TaskManager.Application.Requests;
+using TaskManager.Domain.AggregateModels.Tasks;
 
 namespace TaskManager.Application.QueryHandlers.Tasks
 {
     public class GetTasksRequestHandler : IRequestHandler<GetTasksRequest, List<TaskListDto>>
     {
-        public Task<List<TaskListDto>> Handle(GetTasksRequest request, CancellationToken cancellationToken)
+        private readonly ITasksAggregateRepository _tasksAggregateRepository;
+
+        public GetTasksRequestHandler(ITasksAggregateRepository tasksAggregateRepository)
+        {
+            this._tasksAggregateRepository = tasksAggregateRepository;
+        }
+        public async Task<List<TaskListDto>> Handle(GetTasksRequest request, CancellationToken cancellationToken)
         {
             List<TaskListDto> taskList = new()
             {
@@ -24,7 +31,9 @@ namespace TaskManager.Application.QueryHandlers.Tasks
                 }
             };
 
-            return Task.FromResult(taskList);
+            var taskItems = await this._tasksAggregateRepository.GetAllTaskRecords();
+
+            return await Task.FromResult(taskList);
         }
     }
 }

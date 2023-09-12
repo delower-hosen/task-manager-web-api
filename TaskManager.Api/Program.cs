@@ -1,5 +1,6 @@
 
 using TaskManager.Application;
+using TaskManager.Infrastructure;
 
 namespace TaskManager.Api
 {
@@ -10,9 +11,12 @@ namespace TaskManager.Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
             builder.Services.AddControllers();
 
             builder.Services.AddSwaggerGen();
+
+            builder.Services.ConfigurInfrastructureServices();
 
             builder.Services.ConfigureApplicationServices();
 

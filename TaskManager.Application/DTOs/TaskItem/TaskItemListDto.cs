@@ -1,6 +1,6 @@
-﻿namespace TaskManager.Application.DTOs.Tasks
+﻿namespace TaskManager.Application.DTOs.TaskItem
 {
-    public class TaskListDto : BaseDto
+    public class TaskItemListDto : BaseDto
     {
         public string Title { get; set; }
         public string Description { get; set; }

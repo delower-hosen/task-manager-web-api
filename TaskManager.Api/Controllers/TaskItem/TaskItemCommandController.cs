@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace TaskManager.Api.Controllers.Task
+namespace TaskManager.Api.Controllers.TaskItem
 {
-    public class TaskCommandController : Controller
+    public class TaskItemCommandController : Controller
     {
         public IActionResult Index()
         {

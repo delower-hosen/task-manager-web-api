@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using TaskManager.Domain.AggregateModels.Tasks;
+using TaskManager.Domain.AggregateModels.TaskItemAggregate;
 using TaskManager.Infrastructure.DatabaseContext;
 using TaskManager.Infrastructure.Repositories;
 

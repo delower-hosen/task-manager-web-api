@@ -1,5 +1,5 @@
 ﻿using MongoDB.Driver;
-using TaskManager.Domain.AggregateModels.Tasks;
+using TaskManager.Domain.AggregateModels.TaskItemAggregate;
 using TaskManager.Domain.Entities;
 using TaskManager.Infrastructure.DatabaseContext;
 
@@ -13,7 +13,7 @@ namespace TaskManager.Infrastructure.Repositories
         {
             this._dbContext = dbContext;
         }
-        public async Task<List<TaskItem>> GetAllTaskRecords()
+        public async Task<List<TaskItem>> GetAllTaskItems()
         {
             var taskCollection = this._dbContext.GetCollection<TaskItem>("TaskItems");
 

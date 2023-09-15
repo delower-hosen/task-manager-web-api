@@ -9,7 +9,7 @@ namespace TaskManager.Application.DtoExtensions
         {
             return new TaskItemListDto
             {
-                ItemId = task._id,
+                ItemId = task.ItemId,
                 Title = task.Title,
                 Description = task.Description
             };

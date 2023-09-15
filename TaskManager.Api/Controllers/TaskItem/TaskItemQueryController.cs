@@ -13,10 +13,11 @@ namespace TaskManager.Api.Controllers.TaskItem
         {
             this._mediator = mediator;
         }
-        [HttpGet]
-        public async Task<ActionResult<List<TaskItemListDto>>> Get()
+
+        [HttpPost("GetFilteredTaskItems")]
+        public async Task<ActionResult<TaskItemListResult>> GetFilteredTaskItems([FromBody] GetFilteredTaskItemsQuery query)
         {
-            var testData = await _mediator.Send(new GetTasksRequest());
+            var testData = await _mediator.Send(query);
 
             return Ok(testData);
         }

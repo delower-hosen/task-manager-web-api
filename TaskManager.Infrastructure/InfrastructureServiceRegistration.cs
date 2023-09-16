@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using TaskManager.Domain.AggregateModels.TaskItemAggregate;
+using TaskManager.Domain.AggregateModels.TaskManage;
 using TaskManager.Infrastructure.DatabaseContext;
 using TaskManager.Infrastructure.Repositories;
 
@@ -10,7 +10,7 @@ namespace TaskManager.Infrastructure
         public static IServiceCollection ConfigurInfrastructureServices(this IServiceCollection services)
         {
             services.AddSingleton<IMongoDbContext, MongoDbContext>();
-            services.AddScoped<ITasksAggregateRepository, TasksAggregateRepository>();
+            services.AddScoped<ITaskItemAggregateRepository, TasksAggregateRepository>();
             return services;
         }
     }

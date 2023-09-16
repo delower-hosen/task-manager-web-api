@@ -1,8 +1,8 @@
 ﻿using TaskManager.Domain.Entities;
 
-namespace TaskManager.Domain.AggregateModels.TaskItemAggregate
+namespace TaskManager.Domain.AggregateModels.TaskManage
 {
-    public interface ITasksAggregateRepository
+    public interface ITaskItemAggregateRepository
     {
         Task<(List<TaskItem> data, long totalCount)> GetAllFilteredTaskItems(
             int pageNumber,
@@ -10,5 +10,7 @@ namespace TaskManager.Domain.AggregateModels.TaskItemAggregate
             string searchedTitleText,
             string sortBy,
             bool sortAscending);
+
+        Task CreateTaskItem(TaskItemAggregate aggregate);
     }
 }

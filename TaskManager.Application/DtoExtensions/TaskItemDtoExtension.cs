@@ -1,4 +1,4 @@
-﻿using TaskManager.Application.DTOs.TaskItem;
+﻿using TaskManager.Application.DTOs.TaskManage;
 using TaskManager.Domain.Entities;
 
 namespace TaskManager.Application.DtoExtensions
@@ -10,8 +10,15 @@ namespace TaskManager.Application.DtoExtensions
             return new TaskItemListDto
             {
                 ItemId = task.ItemId,
+                CreateDate = task.CreateDate,
+                Tags = task.Tags,
                 Title = task.Title,
-                Description = task.Description
+                Description = task.Description,
+                Status = task.Status.Value,
+                Priority = task.Priority.Value,
+                DueDate = task.DueDate,
+                CompletionDate = task.CompletionDate,
+                TaskTags = task.TaskTags
             };
         }
     }

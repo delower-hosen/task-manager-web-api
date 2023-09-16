@@ -1,16 +1,16 @@
 ﻿using MediatR;
 using TaskManager.Application.DtoExtensions;
-using TaskManager.Application.DTOs.TaskItem;
+using TaskManager.Application.DTOs.TaskManage;
 using TaskManager.Application.Requests;
-using TaskManager.Domain.AggregateModels.TaskItemAggregate;
+using TaskManager.Domain.AggregateModels.TaskManage;
 
 namespace TaskManager.Application.QueryHandlers.TaskItem
 {
     public class GetTaskItemsRequestHandler : IRequestHandler<GetFilteredTaskItemsQuery, TaskItemListResult>
     {
-        private readonly ITasksAggregateRepository _tasksAggregateRepository;
+        private readonly ITaskItemAggregateRepository _tasksAggregateRepository;
 
-        public GetTaskItemsRequestHandler(ITasksAggregateRepository tasksAggregateRepository)
+        public GetTaskItemsRequestHandler(ITaskItemAggregateRepository tasksAggregateRepository)
         {
             this._tasksAggregateRepository = tasksAggregateRepository;
         }

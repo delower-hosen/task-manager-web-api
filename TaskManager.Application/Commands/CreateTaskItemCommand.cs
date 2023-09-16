@@ -1,7 +1,9 @@
-﻿
-namespace TaskManager.Domain.Entities
+﻿using MediatR;
+using TaskManager.Domain.Entities;
+
+namespace TaskManager.Application.Commands
 {
-    public class TaskItem : EntityBase
+    public class CreateTaskItemCommand : IRequest<bool>
     {
         public string Title { get; set; }
         public string Description { get; set; }
@@ -10,20 +12,5 @@ namespace TaskManager.Domain.Entities
         public Priority? Priority { get; set; }
         public Status? Status { get; set; }
         public string[] TaskTags { get; set; }
-    }
-
-    public enum Priority
-    {
-        Low,
-        Medium,
-        High
-    }
-
-    public enum Status
-    {
-        ToDo,
-        InProgress,
-        InReview,
-        Done
     }
 }

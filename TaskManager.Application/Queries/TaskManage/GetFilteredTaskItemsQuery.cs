@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using TaskManager.Application.DTOs.TaskItem;
+using TaskManager.Application.DTOs.TaskManage;
 
 namespace TaskManager.Application.Requests
 {

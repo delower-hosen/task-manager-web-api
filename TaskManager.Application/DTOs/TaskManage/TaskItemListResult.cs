@@ -1,4 +1,4 @@
-﻿namespace TaskManager.Application.DTOs.TaskItem
+﻿namespace TaskManager.Application.DTOs.TaskManage
 {
     public sealed class TaskItemListResult
     {

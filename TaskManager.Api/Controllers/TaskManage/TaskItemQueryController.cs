@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TaskManager.Application.DTOs.TaskItem;
+using TaskManager.Application.DTOs.TaskManage;
 using TaskManager.Application.Requests;
 
 namespace TaskManager.Api.Controllers.TaskItem

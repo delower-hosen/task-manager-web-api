@@ -1,12 +1,12 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using TaskManager.Domain.AggregateModels.TaskItemAggregate;
+using TaskManager.Domain.AggregateModels.TaskManage;
 using TaskManager.Domain.Entities;
 using TaskManager.Infrastructure.DatabaseContext;
 
 namespace TaskManager.Infrastructure.Repositories
 {
-    public class TasksAggregateRepository : ITasksAggregateRepository
+    public class TasksAggregateRepository : ITaskItemAggregateRepository
     {
         private readonly IMongoDbContext _dbContext;
 
@@ -14,6 +14,15 @@ namespace TaskManager.Infrastructure.Repositories
         {
             this._dbContext = dbContext;
         }
+
+        public async Task CreateTaskItem(TaskItemAggregate aggregate)
+        {
+            var taskCollection = this._dbContext.GetCollection<TaskItem>("TaskItems");
+
+            await taskCollection
+                .InsertOneAsync(aggregate.TaskItemInsertModel);
+        }
+
         public async Task<(List<TaskItem> data, long totalCount)> GetAllFilteredTaskItems(
             int pageNumber,
             int pageSize,

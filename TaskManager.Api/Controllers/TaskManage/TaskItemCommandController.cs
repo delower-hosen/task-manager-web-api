@@ -19,5 +19,12 @@ namespace TaskManager.Api.Controllers.TaskManage
             await _mediator.Send(taskItemCommand);
             return Ok("Created task successfully!");
         }
+
+        [HttpPost("UpdateTaskItem")]
+        public async Task<IActionResult> UpdateTaskItem(UpdateTaskItemCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok("Updated task successfully");
+        }
     }
 }

@@ -12,5 +12,12 @@ namespace TaskManager.Domain.AggregateModels.TaskManage
             bool sortAscending);
 
         Task CreateTaskItem(TaskItemAggregate aggregate);
+        Task UpdateTaskItem(string itemId,
+            string title,
+            string description,
+            DateTime? dueDate,
+            DateTime? completionDate,
+            Priority? priority,
+            Status? status);
     }
 }

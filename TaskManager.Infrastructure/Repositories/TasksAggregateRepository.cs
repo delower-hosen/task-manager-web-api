@@ -60,5 +60,24 @@ namespace TaskManager.Infrastructure.Repositories
 
             return (filteredTaskItems, totalCount);
         }
+
+        public async Task UpdateTaskItem(string itemId,
+            string title,
+            string description,
+            DateTime? dueDate,
+            DateTime? completionDate,
+            Priority? priority,
+            Status? status)
+        {
+            var updateDefinition = Builders<TaskItem>.Update
+                .Set(x => x.Title, title)
+                .Set(x => x.Description, description)
+                .Set(x => x.DueDate, dueDate)
+                .Set(x => x.CompletionDate, completionDate);
+
+            var taskCollection = this._dbContext.GetCollection<TaskItem>("TaskItems");
+
+            await taskCollection.UpdateOneAsync<TaskItem>(x => x.ItemId == itemId, updateDefinition); ;
+        }
     }
 }

@@ -1,0 +1,1 @@
+Task Manager Web API is a project that implements the CQRS pattern using MediatR, follows a clean architecture, and includes CRUD (Create, Read, Update, Delete) operations for managing tasks. Additionally, it provides authentication and role-based authorization using ASP.NET Core Identity and uses MongoDB as the database.

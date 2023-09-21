@@ -5,7 +5,7 @@ namespace TaskManager.Domain.AggregateModels.TaskManage
 {
     public class TaskItemAggregate
     {
-        public TaskItem TaskItemInsertModel { get; protected set; }
+        public TaskItem? TaskItemInsertModel { get; protected set; }
 
         public static TaskItemAggregate Create()
         {

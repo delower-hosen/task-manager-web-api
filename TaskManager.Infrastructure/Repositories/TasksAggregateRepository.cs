@@ -79,5 +79,13 @@ namespace TaskManager.Infrastructure.Repositories
 
             await taskCollection.UpdateOneAsync<TaskItem>(x => x.ItemId == itemId, updateDefinition); ;
         }
+
+        public async Task DeleteTaskItem(string taskId)
+        {
+            var taskCollection = this._dbContext.GetCollection<TaskItem>("TaskItems");
+            
+            await taskCollection.DeleteOneAsync(x => x.ItemId == taskId);
+        }
+
     }
 }

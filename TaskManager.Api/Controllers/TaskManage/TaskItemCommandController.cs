@@ -26,5 +26,12 @@ namespace TaskManager.Api.Controllers.TaskManage
             await _mediator.Send(command);
             return Ok("Updated task successfully");
         }
+
+        [HttpPost("DeleteTaskItem")]
+        public async Task<IActionResult> DeleteTaskItem(DeleteTaskItemCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok("Deleted task successfully");
+        }
     }
 }

@@ -19,5 +19,7 @@ namespace TaskManager.Domain.AggregateModels.TaskManage
             DateTime? completionDate,
             Priority? priority,
             Status? status);
+
+        Task DeleteTaskItem(string TaskItemId);
     }
 }

@@ -19,7 +19,7 @@ namespace TaskManager.Domain.AggregateModels.UserManage
                 FirstName = firstName,
                 LastName = lastName,
                 Email = email,
-                PasswordHash = password // Todo: need to hash the password
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(password)
             };
 
             UserRegistrationModel.AddBasicEntityInfo();

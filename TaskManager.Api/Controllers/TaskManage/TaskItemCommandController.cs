@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Application.Commands;
 
@@ -14,6 +15,7 @@ namespace TaskManager.Api.Controllers.TaskManage
         }
 
         [HttpPost("CreateTaskItem")]
+        [Authorize]
         public async Task<IActionResult> CreateTaskItem(CreateTaskItemCommand taskItemCommand)
         {
             await _mediator.Send(taskItemCommand);
@@ -21,6 +23,7 @@ namespace TaskManager.Api.Controllers.TaskManage
         }
 
         [HttpPost("UpdateTaskItem")]
+        [Authorize]
         public async Task<IActionResult> UpdateTaskItem(UpdateTaskItemCommand command)
         {
             await _mediator.Send(command);
@@ -28,6 +31,7 @@ namespace TaskManager.Api.Controllers.TaskManage
         }
 
         [HttpPost("DeleteTaskItem")]
+        [Authorize]
         public async Task<IActionResult> DeleteTaskItem(DeleteTaskItemCommand command)
         {
             await _mediator.Send(command);

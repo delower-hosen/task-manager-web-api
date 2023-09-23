@@ -20,7 +20,7 @@ namespace TaskManager.Api
 
             builder.Services.AddSwaggerGen();
 
-            builder.Services.ConfigurInfrastructureServices();
+            builder.Services.ConfigurInfrastructureServices(builder.Configuration);
 
             builder.Services.ConfigureApplicationServices();
 
@@ -35,6 +35,8 @@ namespace TaskManager.Api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -6,6 +6,8 @@ namespace TaskManager.Domain.AggregateModels.UserManage
     public class AuthAggregate
     {
         public User? UserRegistrationModel { get; protected set; }
+        public User? CurrentUser { get; protected set; }
+        public bool HasValidCredential { get; protected set; } = false;
         public static AuthAggregate Create()
         {
             return new AuthAggregate();
@@ -23,6 +25,23 @@ namespace TaskManager.Domain.AggregateModels.UserManage
             };
 
             UserRegistrationModel.AddBasicEntityInfo();
+        }
+
+        public void SetCurrentUser(User user) => CurrentUser = user;
+
+        public void ValidateCredential(string password)
+        {
+
+            if (CurrentUser != null)
+            {
+                HasValidCredential = BCrypt.Net.BCrypt.Verify(password, CurrentUser.PasswordHash);
+            }
+
+        }
+
+        public static string GenerateToken(string email, string password)
+        {
+            return string.Empty;
         }
 
     }

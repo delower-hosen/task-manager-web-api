@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Driver;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -50,6 +51,24 @@ namespace TaskManager.Infrastructure.Repositories
             var tokenString = tokenHandler.WriteToken(token);
 
             return Task.FromResult(tokenString);
+        }
+
+        public async Task<User> GetExistingUser(string email)
+        {
+            var filterBuilder = Builders<User>.Filter;
+            var filter = filterBuilder.Eq(x => x.Email, email);
+
+            var findOptions = new FindOptions<User, User>
+            {
+                Skip = 0,
+                Limit = 10
+            };
+
+            var userCollection = this._dbContext.GetCollection<User>("Users");
+
+            var user = (await userCollection.FindAsync(filter, findOptions)).SingleOrDefault();
+
+            return user;
         }
     }
 }

@@ -15,8 +15,18 @@ namespace TaskManager.Application.CommandHandlers.UserManage
         }
         public async Task<LoginResponseDto> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var token = await _authAggregateRepository.LoginUser(email: request.Email,
-                password: request.Password);
+            var currentUser = await _authAggregateRepository.GetExistingUser(request.Email);
+
+            var aggregate = new AuthAggregate();
+            aggregate.SetCurrentUser(currentUser);
+
+            aggregate.ValidateCredential(request.Password);
+
+            if (!aggregate.HasValidCredential)
+            {
+                throw new Exception("Invalid credential");
+            }
+            var token = await _authAggregateRepository.LoginUser(request.Email, request.Password);
 
             var response = new LoginResponseDto(accessToken: token);
 

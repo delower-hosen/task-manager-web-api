@@ -6,6 +6,6 @@ namespace TaskManager.Domain.AggregateModels.UserManage
     {
         Task CreateUser(User? user);
         Task<string> LoginUser(string email, string password);
-        Task<User> GetExistingUser(string email);
+        Task<User> GetUserByEmail(string email);
     }
 }

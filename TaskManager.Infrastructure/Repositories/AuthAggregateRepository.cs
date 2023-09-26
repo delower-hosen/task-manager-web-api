@@ -53,7 +53,7 @@ namespace TaskManager.Infrastructure.Repositories
             return Task.FromResult(tokenString);
         }
 
-        public async Task<User> GetExistingUser(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
             var filterBuilder = Builders<User>.Filter;
             var filter = filterBuilder.Eq(x => x.Email, email);

@@ -20,6 +20,14 @@ namespace TaskManager.Application.CommandHandlers.UserManage
 
             try
             {
+                var user = await _authAggregateRepository.GetUserByEmail(request.Email.ToLower());
+                
+                if (user != null)
+                {
+                    response.SetResponseError("User already exists", HttpStatusCode.BadRequest);
+                    return response;
+                }
+
                 var aggregate = new AuthAggregate();
 
                 aggregate.CreateUserRegistrationModel(firstName: request.FirstName,

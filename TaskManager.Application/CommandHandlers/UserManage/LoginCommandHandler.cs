@@ -21,7 +21,7 @@ namespace TaskManager.Application.CommandHandlers.UserManage
 
             try
             {
-                var currentUser = await _authAggregateRepository.GetExistingUser(request.Email);
+                var currentUser = await _authAggregateRepository.GetUserByEmail(request.Email);
 
                 var aggregate = new AuthAggregate();
                 aggregate.SetCurrentUser(currentUser);

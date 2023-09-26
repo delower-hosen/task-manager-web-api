@@ -1,11 +1,13 @@
 ﻿using MediatR;
+using System.Net;
+using TaskManager.Application.Abstractions.ResponseModels;
 using TaskManager.Application.Commands.UserMange;
 using TaskManager.Application.DTOs.UserManage;
 using TaskManager.Domain.AggregateModels.UserManage;
 
 namespace TaskManager.Application.CommandHandlers.UserManage
 {
-    public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponseDto>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, QueryHandlerRespnse<LoginResponseDto>>
     {
         private readonly IAuthAggregateRepository _authAggregateRepository;
 
@@ -13,22 +15,36 @@ namespace TaskManager.Application.CommandHandlers.UserManage
         {
             this._authAggregateRepository = authAggregateRepository;
         }
-        public async Task<LoginResponseDto> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<QueryHandlerRespnse<LoginResponseDto>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var currentUser = await _authAggregateRepository.GetExistingUser(request.Email);
+            var response = new QueryHandlerRespnse<LoginResponseDto>();
 
-            var aggregate = new AuthAggregate();
-            aggregate.SetCurrentUser(currentUser);
-
-            aggregate.ValidateCredential(request.Password);
-
-            if (!aggregate.HasValidCredential)
+            try
             {
-                throw new Exception("Invalid credential");
-            }
-            var token = await _authAggregateRepository.LoginUser(request.Email, request.Password);
+                var currentUser = await _authAggregateRepository.GetExistingUser(request.Email);
 
-            var response = new LoginResponseDto(accessToken: token);
+                var aggregate = new AuthAggregate();
+                aggregate.SetCurrentUser(currentUser);
+
+                aggregate.ValidateCredential(request.Password);
+
+                if (!aggregate.HasValidCredential)
+                {
+                    response.SetResponseError("Incorrect credential", HttpStatusCode.BadRequest);
+                    return response;
+                }
+                var token = await _authAggregateRepository.LoginUser(request.Email, request.Password);
+
+                var result = new LoginResponseDto(accessToken: token);
+
+                response.SetSuccess(result);
+
+            }
+            catch (Exception ex)
+            {
+
+                response.SetResponseError(ex.Message, HttpStatusCode.InternalServerError);
+            }
 
             return response;
         }

@@ -1,10 +1,12 @@
 ﻿using MediatR;
+using System.Net;
+using TaskManager.Application.Abstractions.ResponseModels;
 using TaskManager.Application.Commands.UserMange;
 using TaskManager.Domain.AggregateModels.UserManage;
 
 namespace TaskManager.Application.CommandHandlers.UserManage
 {
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, bool>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, CommandHandlerResponse>
     {
         private readonly IAuthAggregateRepository _authAggregateRepository;
 
@@ -12,18 +14,31 @@ namespace TaskManager.Application.CommandHandlers.UserManage
         {
             this._authAggregateRepository = authAggregateRepository;
         }
-        public Task<bool> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<CommandHandlerResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-            var aggregate = new AuthAggregate();
+            var response = new CommandHandlerResponse();
 
-            aggregate.CreateUserRegistrationModel(firstName: request.FirstName,
-                lastName: request.LastName,
-                email: request.Email,
-                password: request.Password);
+            try
+            {
+                var aggregate = new AuthAggregate();
 
-            this._authAggregateRepository.CreateUser(aggregate.UserRegistrationModel);
+                aggregate.CreateUserRegistrationModel(firstName: request.FirstName,
+                    lastName: request.LastName,
+                    email: request.Email,
+                    password: request.Password);
 
-            return Task.FromResult(true);
+                await this._authAggregateRepository.CreateUser(aggregate.UserRegistrationModel);
+
+                response.SetSuccess();
+
+            }
+            catch (Exception ex)
+            {
+
+                response.SetResponseError(ex.Message, HttpStatusCode.InternalServerError);
+            }
+
+            return response;
         }
     }
 }

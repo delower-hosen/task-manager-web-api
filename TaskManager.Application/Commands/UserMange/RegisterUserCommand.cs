@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using System.ComponentModel.DataAnnotations;
+using TaskManager.Application.Abstractions.ResponseModels;
 
 namespace TaskManager.Application.Commands.UserMange
 {
-    public class RegisterUserCommand : IRequest<bool>
+    public class RegisterUserCommand : IRequest<CommandHandlerResponse>
     {
         [Required]
         public string FirstName { get; set; }

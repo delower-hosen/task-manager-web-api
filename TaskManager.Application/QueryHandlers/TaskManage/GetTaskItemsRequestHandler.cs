@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using System.Net;
+using TaskManager.Application.Abstractions.ResponseModels;
 using TaskManager.Application.DtoExtensions;
 using TaskManager.Application.DTOs.TaskManage;
 using TaskManager.Application.Requests;
@@ -6,7 +8,7 @@ using TaskManager.Domain.AggregateModels.TaskManage;
 
 namespace TaskManager.Application.QueryHandlers.TaskItem
 {
-    public class GetTaskItemsRequestHandler : IRequestHandler<GetFilteredTaskItemsQuery, TaskItemListResult>
+    public class GetTaskItemsRequestHandler : IRequestHandler<GetFilteredTaskItemsQuery, QueryHandlerRespnse<List<TaskItemListDto>>>
     {
         private readonly ITaskItemAggregateRepository _tasksAggregateRepository;
 
@@ -14,21 +16,29 @@ namespace TaskManager.Application.QueryHandlers.TaskItem
         {
             this._tasksAggregateRepository = tasksAggregateRepository;
         }
-        public async Task<TaskItemListResult> Handle(GetFilteredTaskItemsQuery query, CancellationToken cancellationToken)
+        public async Task<QueryHandlerRespnse<List<TaskItemListDto>>> Handle(GetFilteredTaskItemsQuery query, CancellationToken cancellationToken)
         {
-            var searchedResult = await this._tasksAggregateRepository.GetAllFilteredTaskItems(
+            var response = new QueryHandlerRespnse<List<TaskItemListDto>>();
+            try
+            {
+                var searchedResult = await this._tasksAggregateRepository.GetAllFilteredTaskItems(
                 pageNumber: query.PageNumber,
                 pageSize: query.PageSize,
                 searchedTitleText: query.SearchedTitleText,
                 sortBy: query.SortBy,
                 sortAscending: query.SortAscending);
 
-            var taskListDtos = searchedResult.data.Select(task => task.AsTaskListDto()).ToList();
-            var totalCount = searchedResult.totalCount;
+                var taskListDtos = searchedResult.data.Select(task => task.AsTaskListDto()).ToList();
+                var totalCount = searchedResult.totalCount;
 
-            var result = new TaskItemListResult(taskListDtos, totalCount);
+                response.SetSuccess(taskListDtos, totalCount);
+            }
+            catch (Exception ex)
+            {
 
-            return result;
+                response.SetResponseError(ex.Message, HttpStatusCode.InternalServerError);
+            }
+            return response;
         }
     }
 }

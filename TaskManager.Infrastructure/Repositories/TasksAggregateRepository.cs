@@ -17,7 +17,7 @@ namespace TaskManager.Infrastructure.Repositories
 
         public async Task CreateTaskItem(TaskItemAggregate aggregate)
         {
-            var taskCollection = this._dbContext.GetCollection<TaskItem>("TaskItems");
+            var taskCollection = this._dbContext.GetCollection<TaskItem>(typeof(TaskItem) + "s");
 
             await taskCollection
                 .InsertOneAsync(aggregate.TaskItemInsertModel);
@@ -53,7 +53,7 @@ namespace TaskManager.Infrastructure.Repositories
                 Skip = (pageNumber - 1) * pageSize,
                 Limit = pageSize
             };
-            var taskCollection = this._dbContext.GetCollection<TaskItem>("TaskItems");
+            var taskCollection = this._dbContext.GetCollection<TaskItem>(typeof(TaskItem).Name + "s");
 
             var filteredTaskItems =  (await taskCollection.FindAsync(filterDefinition, findOptions)).ToList();
             var totalCount = await taskCollection.CountDocumentsAsync(filterDefinition);
@@ -75,14 +75,14 @@ namespace TaskManager.Infrastructure.Repositories
                 .Set(x => x.DueDate, dueDate)
                 .Set(x => x.CompletionDate, completionDate);
 
-            var taskCollection = this._dbContext.GetCollection<TaskItem>("TaskItems");
+            var taskCollection = this._dbContext.GetCollection<TaskItem>(typeof(TaskItem).Name + "s");
 
             await taskCollection.UpdateOneAsync<TaskItem>(x => x.ItemId == itemId, updateDefinition); ;
         }
 
         public async Task DeleteTaskItem(string taskId)
         {
-            var taskCollection = this._dbContext.GetCollection<TaskItem>("TaskItems");
+            var taskCollection = this._dbContext.GetCollection<TaskItem>(typeof(TaskItem).Name + "s");
             
             await taskCollection.DeleteOneAsync(x => x.ItemId == taskId);
         }

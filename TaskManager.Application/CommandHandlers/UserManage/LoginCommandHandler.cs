@@ -33,7 +33,7 @@ namespace TaskManager.Application.CommandHandlers.UserManage
                     response.SetResponseError("Incorrect credential", HttpStatusCode.BadRequest);
                     return response;
                 }
-                var token = await _authAggregateRepository.LoginUser(request.Email, request.Password);
+                var token = await _authAggregateRepository.GenerateToken(request.Email, request.Password);
 
                 var result = new LoginResponseDto(accessToken: token);
 

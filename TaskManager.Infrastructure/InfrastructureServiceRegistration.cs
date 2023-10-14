@@ -5,6 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TaskManager.Domain.AggregateModels.TaskManage;
 using TaskManager.Domain.AggregateModels.UserManage;
+using TaskManager.Domain.Configs;
+using TaskManager.Infrastructure.Configs;
 using TaskManager.Infrastructure.DatabaseContext;
 using TaskManager.Infrastructure.Repositories;
 
@@ -15,6 +17,7 @@ namespace TaskManager.Infrastructure
         public static IServiceCollection ConfigurInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton<IMongoDbContext, MongoDbContext>();
+            services.AddSingleton<ICustomAppConfigProvider, CustomAppConfigProvider>();
             services.AddScoped<ITaskItemAggregateRepository, TasksAggregateRepository>();
             services.AddScoped<IAuthAggregateRepository, AuthAggregateRepository>();
 

@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using TaskManager.Domain.AggregateModels.UserManage;
+using TaskManager.Domain.Configs;
 using TaskManager.Domain.Entities;
 using TaskManager.Infrastructure.DatabaseContext;
 
@@ -13,10 +13,10 @@ namespace TaskManager.Infrastructure.Repositories
     public class AuthAggregateRepository : IAuthAggregateRepository
     {
         private readonly IMongoDbContext _dbContext;
-        private readonly IConfiguration _configuration;
+        private readonly ICustomAppConfigProvider _configuration;
 
         public AuthAggregateRepository(IMongoDbContext dbContext,
-            IConfiguration configuration)
+            ICustomAppConfigProvider configuration)
         {
             this._dbContext = dbContext;
             this._configuration = configuration;
@@ -24,17 +24,17 @@ namespace TaskManager.Infrastructure.Repositories
 
         public async Task CreateUser(User user)
         {
-            var userCollection = this._dbContext.GetCollection<User>("Users");
+            var userCollection = this._dbContext.GetCollection<User>(typeof(User).Name + "s");
 
             await userCollection
                 .InsertOneAsync(user);
         }
 
-        public Task<string> LoginUser(string email, string password)
+        public Task<string> GenerateToken(string email, string password)
         {
-
+            var secret = _configuration.GetJwtTokenSecret();
             var key = new SymmetricSecurityKey(Encoding.UTF8
-                .GetBytes(_configuration.GetSection("JwtSettings:Secret").Value));
+                .GetBytes(secret));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
@@ -64,7 +64,7 @@ namespace TaskManager.Infrastructure.Repositories
                 Limit = 10
             };
 
-            var userCollection = this._dbContext.GetCollection<User>("Users");
+            var userCollection = this._dbContext.GetCollection<User>(typeof(User).Name + "s");
 
             var user = (await userCollection.FindAsync(filter, findOptions)).SingleOrDefault();
 
